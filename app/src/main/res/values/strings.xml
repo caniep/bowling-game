@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bowling Game</string>
+    <string name="title_frame">Bowling Game: Frame %1$s, %2$s</string>
+    <string name="title_score">Bowling Game: Score</string>
+    <string name="first_attempt">First Attempt</string>
+    <string name="second_attempt">Second Attempt</string>
+    <string name="third_attempt">Third Attempt</string>
+</resources>

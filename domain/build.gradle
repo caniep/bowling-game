@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation "org.mockito:mockito-core:2.27.0"
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
