@@ -1,6 +1,5 @@
 package drodobytecom.bowl.usecase;
 
-import drodobytecom.bowl.entity.Frame;
 import drodobytecom.bowl.entity.Game;
 import drodobytecom.bowl.entity.GameService;
 
@@ -12,7 +11,7 @@ public class PlayOneShotCase extends AbstractCase {
 
    public void shot(int pinsDown, Action action) {
       Game game = service.game(false);
-      Frame frame = game.shot(pinsDown);
+      Game.Frame frame = game.shot(pinsDown);
       service.save(game);
 
       if (game.isDone())

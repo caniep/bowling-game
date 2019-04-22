@@ -1,43 +1,55 @@
 package drodobytecom.bowl.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Collections.unmodifiableList;
+/**
+ * The bowling game containing the frames and logic for throwing balls
+ */
+public interface Game {
 
-public class Game {
+   /**
+    * Throws a ball
+    *
+    * @param pinsDown pins hit by the move
+    * @return the {@link Frame} with the stats
+    * @throws GameException is pinsDown is invalid {@link GameException.Reason}
+    */
+   Frame shot(int pinsDown) throws GameException;
 
-   private final List<Frame> frames;
+   Frame currentFrame();
 
-   Game() {
-      frames = new ArrayList<>(10);
-      frames.add(new Frame(1));
-   }
+   List<Frame> frames();
 
-   public Frame shot(int pinsDown) throws GameException {
-      currentFrame().shot(pinsDown);
+   /**
+    * @return true when game is finished
+    */
+   boolean isDone();
 
-      if (currentFrame().isDone())
-         if (!(currentFrame() instanceof TenthFrame))
-            nextFrame();
+   /**
+    * Contains the stats of the frame, and the throw attempts done by the player
+    */
+   interface Frame {
 
-      return currentFrame();
-   }
+      int number();
 
-   public Frame currentFrame() {
-      return frames.get(frames.size() - 1);
-   }
+      List<Attempt> attempts();
 
-   public List<Frame> frames() {
-      return unmodifiableList(frames);
-   }
+      boolean isDone();
 
-   public boolean isDone() {
-      return currentFrame().number() == 10 && currentFrame().isDone();
-   }
+      boolean isStrike();
 
-   private void nextFrame() {
-      int next = currentFrame().number() + 1;
-      frames.add(next == 10 ? new TenthFrame() : new Frame(next));
+      boolean isSpare();
+
+      int pinsDown();
+
+      int pinsLeft();
+
+      /**
+       * Pins down on a single attempt
+       */
+      interface Attempt {
+
+         int pinsDown();
+      }
    }
 }

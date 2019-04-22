@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import drodobytecom.bowl.entity.Frame;
-import drodobytecom.bowl.entity.Frame.Attempt;
 import drodobytecom.bowl.entity.Game;
+import drodobytecom.bowl.entity.Game.Frame;
+import drodobytecom.bowl.entity.Game.Frame.Attempt;
 import drodobytecom.bowl.usecase.model.Score;
 import drodobytecom.bowl.util.Adapter;
 

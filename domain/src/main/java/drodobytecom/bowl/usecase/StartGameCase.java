@@ -1,7 +1,7 @@
 package drodobytecom.bowl.usecase;
 
-import drodobytecom.bowl.entity.Frame;
 import drodobytecom.bowl.entity.Game;
+import drodobytecom.bowl.entity.Game.Frame;
 import drodobytecom.bowl.entity.GameService;
 
 public class StartGameCase extends AbstractCase {
