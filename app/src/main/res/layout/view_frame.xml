@@ -15,17 +15,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/firstAttempt"
+            android:id="@+id/firstHit"
             style="@style/frame_cell"
             tools:text="10" />
 
         <TextView
-            android:id="@+id/secondAttempt"
+            android:id="@+id/secondHit"
             style="@style/frame_cell"
             tools:text="10" />
 
         <TextView
-            android:id="@+id/thirdAttempt"
+            android:id="@+id/thirdHit"
             style="@style/frame_cell"
             android:visibility="gone"
             tools:text="10" />

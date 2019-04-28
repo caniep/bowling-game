@@ -12,7 +12,12 @@ public class GameException extends RuntimeException {
       return reason;
    }
 
+   @Override
+   public String toString() {
+      return super.toString() + ": " + reason;
+   }
+
    public enum Reason {
-      InvalidPins
+      InvalidPlays, InvalidTenthFrame, InvalidPins
    }
 }

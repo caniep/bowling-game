@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+
 import drodobytecom.bowl.App;
 import drodobytecom.bowl.R;
 import drodobytecom.bowl.presenter.PlayPresenter;
 import drodobytecom.bowl.view.PlayView;
+import drodobytecom.bowl.view.imp.model.ModelScore;
 
 import static java.lang.Integer.parseInt;
 
@@ -35,7 +38,8 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
       secondAttempt = getString(R.string.second_attempt);
       thirdAttempt = getString(R.string.third_attempt);
 
-      listener = new PlayPresenter(((App) getApplication()).service());
+      App app = (App) getApplication();
+      listener = new PlayPresenter(app.gameService(), app.dataService());
       listener.started(this);
    }
 
@@ -49,8 +53,10 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
    }
 
    @Override
-   public void showScore() {
-      startActivity(new Intent(this, ScoreActivity.class));
+   public void showScore(ModelScore score) {
+      Intent intent = new Intent(this, ScoreActivity.class);
+      intent.putExtra("score", new Gson().toJson(score));
+      startActivity(intent);
    }
 
    public void pinClicked(View view) {

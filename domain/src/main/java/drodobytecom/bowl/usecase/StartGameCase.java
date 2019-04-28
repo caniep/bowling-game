@@ -1,22 +1,26 @@
 package drodobytecom.bowl.usecase;
 
-import drodobytecom.bowl.entity.Game;
-import drodobytecom.bowl.entity.Game.Frame;
+import java.util.List;
+
 import drodobytecom.bowl.entity.GameService;
+import drodobytecom.bowl.entity.Stats;
+import drodobytecom.bowl.entity.DataService;
 
 public class StartGameCase extends AbstractCase {
 
-   public StartGameCase(GameService service) {
-      super(service);
+   public StartGameCase(GameService gameService, DataService dataService) {
+      super(gameService, dataService);
    }
 
    public void start(Action action) {
-      Game game = service.game(true);
-      service.save(game);
-      action.viewFrame(game.currentFrame());
+      List<Integer> shots = dataService.loadShots();
+      Stats stats = gameService.play(shots);
+      dataService.saveShots(shots);
+
+      action.viewPlay(stats.nextFrame(), stats.nextAttempt(), stats.nextPinsLeft());
    }
 
    public interface Action {
-      void viewFrame(Frame frame);
+      void viewPlay(int frame, int attempt, int pinsLeft);
    }
 }

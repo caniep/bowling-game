@@ -1,12 +1,12 @@
 package drodobytecom.bowl.view;
 
-import drodobytecom.bowl.usecase.model.Score;
+import drodobytecom.bowl.view.imp.model.ModelScore;
 
 public interface ScoreView {
 
-   void show(Score score);
+   void show(ModelScore score);
 
    interface Listener {
-      void shown(ScoreView view);
+      void shown(ScoreView view, ModelScore score);
    }
 }

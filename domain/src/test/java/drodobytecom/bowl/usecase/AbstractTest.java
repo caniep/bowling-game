@@ -1,67 +1,57 @@
 package drodobytecom.bowl.usecase;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 
+import drodobytecom.bowl.entity.DataService;
+import drodobytecom.bowl.entity.DefaultDataService;
+import drodobytecom.bowl.entity.DefaultGameService;
 import drodobytecom.bowl.entity.GameService;
-import drodobytecom.bowl.entity.InMemoryGameService;
+import drodobytecom.bowl.entity.Score;
+import drodobytecom.bowl.usecase.PlayOneShotCase.Action;
 
 abstract class AbstractTest {
 
-   @Mock
-   GameService service;
+   private GameService gameService;
+   private DataService dataService;
 
    @BeforeEach
    void init() {
-      service = new InMemoryGameService();
+      gameService = new DefaultGameService();
+      dataService = new DefaultDataService();
    }
 
-   void startGame(StartGameCase.Action action) {
-      new StartGameCase(service).start(action);
+   void start(StartGameCase.Action action) {
+      new StartGameCase(gameService, dataService).start(action);
    }
 
-   void playOneShot(int pinsDown, PlayOneShotCase.Action action) {
-      new PlayOneShotCase(service).shot(pinsDown, action);
-   }
-
-   void playShots(int[] pinsDownPerShot, PlayOneShotCase.Action actionOnLastShot) {
-      playShotsRecursive(pinsDownPerShot, 0, actionOnLastShot);
+   void play(int[] shots, Action action) {
+      playRecursive(shots, 0, action);
    }
 
    int[] shots(int... shots) {
       return shots;
    }
 
-   void computeScore(ComputeScoreCase.Action action) {
-      new ComputeScoreCase(service).compute(action);
-   }
-
-   void computeScore(int[] shots, ComputeScoreCase.Action action) {
-      playShots(shots, new PlayOneShotCase.Action() {
-         @Override
-         public void viewPlay(int frame, int attempt, int pinsLeft) {
-         }
-
-         @Override
-         public void viewScore() {
-            computeScore(score -> action.show(score));
-         }
-      });
-   }
-
-   private void playShotsRecursive(int[] shots, int index, PlayOneShotCase.Action action) {
-      if (index == shots.length - 1)
-         playOneShot(shots[index], action);
-      else
-         playOneShot(shots[index], new PlayOneShotCase.Action() {
+   private void playRecursive(int[] shots, int i, Action action) {
+      if (i < shots.length)
+         new PlayOneShotCase(gameService, dataService).shot(shots[i], new Action() {
             @Override
             public void viewPlay(int frame, int attempt, int pinsLeft) {
-               playShotsRecursive(shots, index + 1, action);
+               action.viewPlay(frame, attempt, pinsLeft);
+               playRecursive(shots, i + 1, action);
             }
 
             @Override
-            public void viewScore() {
-               action.viewScore();
+            public void viewScore(Score score) {
+               if (tooMuchShots())
+                  playRecursive(shots, i + 1, action);
+               else
+                  action.viewScore(score);
+            }
+
+            // erroneous condition, we need to fake call to raise GameException
+            private boolean tooMuchShots() {
+               return i + 1 < shots.length;
             }
          });
    }
